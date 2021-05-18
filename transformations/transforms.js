@@ -31,7 +31,9 @@ export class Transformations{
       this.moving = false;
     })
     this.c.addEventListener('wheel',(e)=>{
-      const change = .9;
+      e.preventDefault();
+      if(this.isStatic) return;
+      const change = .75;
       this.scale = e.deltaY > 0? this.scale * change : this.scale / change;
     })
   }
@@ -59,6 +61,11 @@ export class Transformations{
       x: xSum / shape.length,
       y: ySum / shape.length,
     }
+  }
+  transformLineWidth(lineWidth){
+    const points = [this.transformPoint({x: 0,y: 0}),
+      this.transformPoint({x: lineWidth, y:0 })];
+    return points[1].x - points[0].x;
   }
   translateShape(shape,x,y){
     for(let i=0;i<shape.length;i++){
